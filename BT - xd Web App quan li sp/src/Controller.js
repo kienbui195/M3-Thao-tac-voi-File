@@ -1,5 +1,6 @@
 const fs = require("fs");
 const qs = require("qs");
+const url = require("url");
 
 
 class Controller {
@@ -13,8 +14,8 @@ class Controller {
                 html += `<td>${index + 1}</td>`
                 html += `<td>${item.name}</td>`
                 html += `<td>${item.price}</td>`
-                html += `<td><a class="btn btn-danger" type="submit" href="">Delete</a><a class="btn btn-primary" 
-                                type="submit" href="">Update</a></td>`
+                html += `<td><a class="btn btn-danger" href="/delete?index=${index}">Delete</a><a class="btn btn-primary" 
+                                type="submit" href="/update?index=${index}">Update</a></td>`
                 html += `</tr>`
             })
         })
@@ -66,6 +67,29 @@ class Controller {
                 })
             }
         })
+    }
+
+    updateProduct(req , res , pathname) {
+
+    }
+
+    deleteProduct(req , res) {
+        console.log(1)
+        fs.readFile('./data.json','utf-8' , (err, data) => {
+
+            let dataJson = JSON.parse(data)
+            let path = url.parse(req.url).pathname
+            let index = path.replace(/(\/delete\?index=){1}/g, '')
+
+            if (req.method === 'GET') {
+                fs.readFile('./views/alertDelete.html', 'utf-8' , (err, data) => {
+                    res.writeHead(200, {'Content-Type' : 'text/html'})
+                    res.write(data)
+                    res.end()
+                })
+            }
+        })
+
     }
 }
 

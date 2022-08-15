@@ -19,9 +19,11 @@ let server = http.createServer((req,res) => {
         case '/create':
             app.createProduct(req, res)
             break
-        case '/delete':
+        case path.includes('delete'):
+            app.deleteProduct(req, res)
             break
-        case '/update':
+        case path.includes('update'):
+            app.updateProduct(req , res)
             break
         default:
             res.end();
