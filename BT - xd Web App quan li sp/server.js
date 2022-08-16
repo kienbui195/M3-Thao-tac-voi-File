@@ -1,29 +1,27 @@
 const http = require('http')
-const fs = require('fs')
-const qs = require('qs')
 const url = require('url')
 const Controller = require("./src/Controller");
+const qs = require('qs')
 
-const port = 8080
-
+const port = 3000
 
 let app = new Controller()
 
 let server = http.createServer((req,res) => {
     let path = url.parse(req.url).pathname
-
+    let indexJson = +qs.parse(url.parse(req.url).query).index
     switch (path) {
         case '/':
             app.readFileAndShow(req, res);
             break
-        case '/create':
+        case '/add':
             app.createProduct(req, res)
             break
-        case path.includes('delete'):
-            app.deleteProduct(req, res)
+        case '/delete':
+            app.deleteProduct(req, res, indexJson)
             break
-        case path.includes('update'):
-            app.updateProduct(req , res)
+        case '/update':
+            app.updateProduct(req, res, indexJson)
             break
         default:
             res.end();
